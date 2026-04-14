@@ -15,8 +15,10 @@ import ProofOfConcept from './pages/ProofOfConcept'
 import ExecutionRoadmap from './pages/ExecutionRoadmap'
 import RiskMatrix from './pages/RiskMatrix'
 import OperationsPlaybook from './pages/OperationsPlaybook'
+import ConsolidatedReport from './pages/ConsolidatedReport'
 
 export const SECTIONS = [
+  { id: 'consolidated', icon: '📄', label: 'Optimized Report (No-Bar)' },
   { id: 'overview', icon: '📊', label: 'Executive Overview' },
   { id: 'idea', icon: '💡', label: 'Idea Validation' },
   { id: 'market', icon: '📈', label: 'Market Validation' },
@@ -33,6 +35,7 @@ export const SECTIONS = [
 ]
 
 const PAGE_MAP = {
+  consolidated: ConsolidatedReport,
   overview: Overview,
   idea: IdeaValidation,
   market: MarketValidation,
