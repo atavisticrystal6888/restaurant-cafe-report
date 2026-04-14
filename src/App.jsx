@@ -1,0 +1,80 @@
+import { useState, useCallback } from 'react'
+import Sidebar from './components/Sidebar'
+import Header from './components/Header'
+import PageFooter from './components/PageFooter'
+import Overview from './pages/Overview'
+import IdeaValidation from './pages/IdeaValidation'
+import MarketValidation from './pages/MarketValidation'
+import CompetitiveBenchmarking from './pages/CompetitiveBenchmarking'
+import FeasibilityLocation from './pages/FeasibilityLocation'
+import Licensing from './pages/Licensing'
+import SetupCosts from './pages/SetupCosts'
+import ThemeOptions from './pages/ThemeOptions'
+import AudienceValidation from './pages/AudienceValidation'
+import ProofOfConcept from './pages/ProofOfConcept'
+import ExecutionRoadmap from './pages/ExecutionRoadmap'
+import RiskMatrix from './pages/RiskMatrix'
+import OperationsPlaybook from './pages/OperationsPlaybook'
+
+export const SECTIONS = [
+  { id: 'overview', icon: '📊', label: 'Executive Overview' },
+  { id: 'idea', icon: '💡', label: 'Idea Validation' },
+  { id: 'market', icon: '📈', label: 'Market Validation' },
+  { id: 'competition', icon: '🏆', label: 'Competitive Benchmarking' },
+  { id: 'location', icon: '📍', label: 'Feasibility & Location' },
+  { id: 'licensing', icon: '📜', label: 'Licensing & Regulatory' },
+  { id: 'costs', icon: '💰', label: 'Setup & Operations Cost' },
+  { id: 'themes', icon: '🎨', label: 'Theme Options' },
+  { id: 'audience', icon: '🎯', label: 'Audience Validation' },
+  { id: 'poc', icon: '✅', label: 'Proof of Concept' },
+  { id: 'roadmap', icon: '🗺️', label: 'Execution Roadmap' },
+  { id: 'risks', icon: '⚠️', label: 'Risk Matrix' },
+  { id: 'operations', icon: '📋', label: 'Operations Playbook' },
+]
+
+const PAGE_MAP = {
+  overview: Overview,
+  idea: IdeaValidation,
+  market: MarketValidation,
+  competition: CompetitiveBenchmarking,
+  location: FeasibilityLocation,
+  licensing: Licensing,
+  costs: SetupCosts,
+  themes: ThemeOptions,
+  audience: AudienceValidation,
+  poc: ProofOfConcept,
+  roadmap: ExecutionRoadmap,
+  risks: RiskMatrix,
+  operations: OperationsPlaybook,
+}
+
+export default function App() {
+  const [active, setActive] = useState('overview')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const navigate = useCallback((id) => {
+    setActive(id)
+    setSidebarOpen(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  const idx = SECTIONS.findIndex(s => s.id === active)
+  const Page = PAGE_MAP[active] || Overview
+
+  return (
+    <>
+      <Header onToggleSidebar={() => setSidebarOpen(p => !p)} />
+      <div className={`sidebar-overlay ${sidebarOpen ? 'show' : ''}`} onClick={() => setSidebarOpen(false)} />
+      <Sidebar active={active} onNavigate={navigate} isOpen={sidebarOpen} />
+      <main className="main-content">
+        <Page navigate={navigate} />
+        <PageFooter
+          onPrev={idx > 0 ? () => navigate(SECTIONS[idx - 1].id) : null}
+          onNext={idx < SECTIONS.length - 1 ? () => navigate(SECTIONS[idx + 1].id) : null}
+          prevLabel={idx > 0 ? SECTIONS[idx - 1].label : ''}
+          nextLabel={idx < SECTIONS.length - 1 ? SECTIONS[idx + 1].label : ''}
+        />
+      </main>
+    </>
+  )
+}
