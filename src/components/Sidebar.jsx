@@ -1,10 +1,8 @@
-import { SECTIONS } from '../App'
-
-export default function Sidebar({ active, onNavigate, isOpen }) {
+export default function Sidebar({ sections, active, onNavigate, isOpen, label = 'Navigation' }) {
   return (
     <nav className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="sidebar-section-label">Business Plan</div>
-      {SECTIONS.map((s, i) => (
+      <div className="sidebar-section-label">{label}</div>
+      {sections.map((s, i) => (
         <a
           key={s.id}
           className={`nav-link ${active === s.id ? 'active' : ''}`}
